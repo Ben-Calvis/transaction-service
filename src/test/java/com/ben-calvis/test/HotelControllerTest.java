@@ -1,14 +1,6 @@
-package com.khoubyari.example.test;
-
-/**
- * Uses JsonPath: http://goo.gl/nwXpb, Hamcrest and MockMVC
- */
+package com.ben-calvis
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.khoubyari.example.Application;
-import com.khoubyari.example.api.rest.HotelController;
-import com.khoubyari.example.domain.Hotel;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +20,8 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,7 +35,7 @@ public class HotelControllerTest {
     private static final String RESOURCE_LOCATION_PATTERN = "http://localhost/example/v1/hotels/[0-9]+";
 
     @InjectMocks
-    HotelController controller;
+    com.khoubyari.example.api.rest.HotelController controller;
 
     @Autowired
     WebApplicationContext context;
@@ -65,7 +58,7 @@ public class HotelControllerTest {
 
     @Test
     public void shouldCreateRetrieveDelete() throws Exception {
-        Hotel r1 = mockHotel("shouldCreateRetrieveDelete");
+        com.khoubyari.example.domain.Hotel r1 = mockHotel("shouldCreateRetrieveDelete");
         byte[] r1Json = toJson(r1);
 
         //CREATE
@@ -108,7 +101,7 @@ JSONAssert.assertEquals(
 
     @Test
     public void shouldCreateAndUpdateAndDelete() throws Exception {
-        Hotel r1 = mockHotel("shouldCreateAndUpdate");
+        com.khoubyari.example.domain.Hotel r1 = mockHotel("shouldCreateAndUpdate");
         byte[] r1Json = toJson(r1);
         //CREATE
         MvcResult result = mvc.perform(post("/example/v1/hotels")
@@ -120,7 +113,7 @@ JSONAssert.assertEquals(
                 .andReturn();
         long id = getResourceIdFromUrl(result.getResponse().getRedirectedUrl());
 
-        Hotel r2 = mockHotel("shouldCreateAndUpdate2");
+        com.khoubyari.example.domain.Hotel r2 = mockHotel("shouldCreateAndUpdate2");
         r2.setId(id);
         byte[] r2Json = toJson(r2);
 
@@ -158,8 +151,8 @@ JSONAssert.assertEquals(
     }
 
 
-    private Hotel mockHotel(String prefix) {
-        Hotel r = new Hotel();
+    private com.khoubyari.example.domain.Hotel mockHotel(String prefix) {
+        com.khoubyari.example.domain.Hotel r = new com.khoubyari.example.domain.Hotel();
         r.setCity(prefix + "_city");
         r.setDescription(prefix + "_description");
         r.setName(prefix + "_name");
